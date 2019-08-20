@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {getCurrentLocation, getWeatherByCity, deleteCity} from './actions'
-import CitySearch from './components/CitySearch'
-import WeatherTable from './components/WeatherTable'
+import {getCurrentLocation} from './actions'
 import './styles/style.css'
 
 class App extends React.Component{
@@ -13,7 +11,7 @@ class App extends React.Component{
         icon: ''
     };
 
-    componentDidMount(){
+     componentDidMount(){
         this.props.getCurrentLocation();
     }
 
@@ -22,7 +20,9 @@ class App extends React.Component{
             const API_KEY = 'f6b238cfbf1ab8f76d87a7f3ebcc799a';
             const {lat, lon} = this.props.location;
             const api_call = await  fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${API_KEY}`);
+
             const response = await api_call.json();
+            console.log(response)
             this.setState({
                 temp: response.main.temp,
                 city: response.name,
@@ -32,32 +32,20 @@ class App extends React.Component{
         }
     }
 
-    handleSearch = (city) => {
-        this.props.getWeatherByCity(city)
-    };
-
-    deleteCity = (cityId) => {
-        //console.log(cityId)
-        this.props.deleteCity(cityId)
-    };
-
     render(){
-        const {temp, city, description, icon} = this.state;
+         const {temp, city, description, icon} = this.state;
         if(this.state.temp === ''){
             return <div>Loading</div>
         }
-        //console.log('this.props.weather.error', this.props.weather)
+
         return(
             <div className="ui container">
                 <div className="current-weather">
-                    <h3>Current Location: <span>"{city}"</span></h3>
-                    <h4><img src={`http://openweathermap.org/img/w/${icon}.png`} alt="icon"/> {temp}&deg;C - {description}</h4>
+                    <h3><img src={`http://openweathermap.org/img/w/${icon}.png`} alt="icon"/> {temp}</h3>
+                    <h3>"{city}"</h3>
+                    <h4>{description}</h4>
+
                 </div>
-                <CitySearch handleSearch={this.handleSearch} errorMatches={this.props.weather.errorMatches}/>
-                <WeatherTable
-                    weatherData={this.props.weather}
-                    deleteCity={this.deleteCity}
-                />
             </div>
         )
     }
@@ -65,9 +53,8 @@ class App extends React.Component{
 
 const mapStateToProps = (state) => {
     return{
-        location: state.currentLocation,
-        weather: state.weather
+        location: state.currentLocation
     }
 };
 
-export default connect(mapStateToProps, {getCurrentLocation, getWeatherByCity, deleteCity})(App);
+export default connect(mapStateToProps, {getCurrentLocation})(App);
