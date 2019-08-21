@@ -2,7 +2,7 @@ import React from 'react'
 
 const WeatherTable =(props) =>{
 
-    if(!props.weatherData){
+    if(!props.weatherData.data){
         return <div>Loading...</div>
     }
     const {data, errorItems} = props.weatherData;
@@ -10,7 +10,7 @@ const WeatherTable =(props) =>{
         return data.map(item => {
             return(
                 <tr key={item.id}>
-                    <td>{item.city}</td>
+                    <td>{item.city}, {item.country}</td>
                     <td>{item.temp}</td>
                     <td>{item.humidity}</td>
                     <td>{item.wind}</td>
@@ -28,7 +28,7 @@ const WeatherTable =(props) =>{
                     <th>Temperature, &deg;C</th>
                     <th>Humidity, %</th>
                     <th>Wind Speed, mps</th>
-                    <th></th>
+                    <th/>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,7 +37,7 @@ const WeatherTable =(props) =>{
             </table>
             {errorItems &&
                 <div className="ui bottom attached orange message">
-                    <i className="warning icon"></i>
+                    <i className="warning icon"/>
                     {errorItems}
                 </div>
             }
