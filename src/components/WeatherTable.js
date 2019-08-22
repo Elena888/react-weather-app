@@ -6,8 +6,11 @@ const WeatherTable =(props) =>{
         return <div>Loading...</div>
     }
     const {data, errorItems} = props.weatherData;
+
     const renderWeatherData = () => {
+        console.log('data',data)
         return data.map(item => {
+            console.log(item.city)
             return(
                 <tr key={item.id}>
                     <td>{item.city}, {item.country}</td>

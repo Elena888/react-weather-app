@@ -1,19 +1,16 @@
-import {CURRENT_LOCATION} from "../actions/types";
+import {CURRENT_LOCATION_WEATHER, ERROR_DENIED_GEOLOCATION} from "../actions/types";
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+    data: [],
+    error: null
+};
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
-        case CURRENT_LOCATION:
-            //HOW MAKE [action.payload]: action.payload???
-            return {
-                ...state,
-                city: action.payload.city,
-                country: action.payload.country,
-                temp: action.payload.temp,
-                icon: action.payload.icon,
-                description: action.payload.description
-            };
+        case CURRENT_LOCATION_WEATHER:
+            return { ...state, data: action.payload, error: null };
+        case ERROR_DENIED_GEOLOCATION:
+            return { ...state, error: 'Geolocation is not supported by this browser.'};
         default:
                 return state;
     }

@@ -1,9 +1,28 @@
 import React, {Component} from 'react'
 
 class CitySearch extends Component{
+    constructor(props){
+        super(props);
+        this.autocomplete = null;
+        this.google = window.google;
+    }
     state = {
-        city: '',
-        showError: false
+        city: ''
+    };
+
+    componentDidMount(){
+        this.autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('autocomplete'), {})
+        this.autocomplete.addListener("place_changed", this.handlePlaceSelect)
+    }
+
+    handlePlaceSelect = () => {
+        let addressObject = this.autocomplete.getPlace();
+        let address = addressObject.address_components
+        console.log('addressObject', addressObject)
+        console.log('address', address)
+       /* this.setState({
+            city: addressObject.name
+        })*/
     };
 
     handleChange = (e) => {
@@ -11,6 +30,7 @@ class CitySearch extends Component{
             city: e.target.value
         })
     };
+
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -20,31 +40,13 @@ class CitySearch extends Component{
         })
     };
 
-    handleError = () => {
-        if(this.props.errorMatches){
-
-        }
-    };
-
-    componentDidUpdate(prevProps){
-        //console.log('prevProps.errorMatches', prevProps.errorMatches)
-        //console.log('this.props.errorMatches', this.props.errorMatches)
-        if(prevProps.errorMatches !== this.props.errorMatches){
-            this.setState({ showError: true });
-
-            setTimeout(() => {
-                this.setState({ showError: false })
-            }, 5000)
-        }
-    }
-
     render(){
-        let display = this.state.showError ? 'block' : 'none';
         return(
             <form onSubmit={this.handleSubmit}>
                 <div className="search-input">
                     <div className="ui icon input">
                         <input
+                            id="autocomplete"
                             type="text"
                             placeholder="Search..."
                             onChange={this.handleChange}
@@ -54,16 +56,20 @@ class CitySearch extends Component{
                             <i className="inverted circular search link icon"></i>
                         </button>
                     </div>
-
-                        <div className="tooltip" style={{display: `${display}`}}>
-                            <i className="warning icon"></i>
-                            {this.props.errorMatches}
-                        </div>
-
+                    {this.props.errorMatches &&
+                    <div className="tooltip">
+                        <i className="warning icon"></i>
+                        {this.props.errorMatches}
+                    </div>
+                    }
                 </div>
             </form>
+
         )
     }
 }
 
 export default CitySearch
+
+
+{/**/}
