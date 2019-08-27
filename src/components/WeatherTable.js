@@ -1,26 +1,35 @@
 import React from 'react'
 
 const WeatherTable =(props) =>{
-
-    if(!props.weatherData.data){
-        return <div>Loading...</div>
-    }
     const {data, errorItems} = props.weatherData;
 
+    if(!data){
+        return <div>Loading...</div>
+    }
+
+
     const renderWeatherData = () => {
-        console.log('data',data)
-        return data.map(item => {
-            console.log(item.city)
-            return(
-                <tr key={item.id}>
-                    <td>{item.city}, {item.country}</td>
-                    <td>{item.temp}</td>
-                    <td>{item.humidity}</td>
-                    <td>{item.wind}</td>
-                    <td><i onClick={() => props.deleteCity(item.id)} className="window close outline icon"/></td>
-                </tr>
-            )
-        })
+        if(data.length > 0){
+            console.log('length > 0')
+        }else{
+            console.log('length < 0')
+        }
+        console.log('renderWeatherData data',data)
+        //console.log('renderWeatherData data',data.length)
+
+            return data.map(item => {
+                console.log(item.city)
+                return (
+                    <tr key={item.id}>
+                        <td>{item.city}, {item.country}</td>
+                        <td>{item.temp}</td>
+                        <td>{item.humidity}</td>
+                        <td>{item.wind}</td>
+                        <td><i onClick={() => props.deleteCity(item.id)} className="window close outline icon"/></td>
+                    </tr>
+                )
+            })
+
     };
     return(
         <div>

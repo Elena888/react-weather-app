@@ -1,28 +1,8 @@
 import React, {Component} from 'react'
 
 class CitySearch extends Component{
-    constructor(props){
-        super(props);
-        this.autocomplete = null;
-        this.google = window.google;
-    }
     state = {
         city: ''
-    };
-
-    componentDidMount(){
-        this.autocomplete = new window.google.maps.places.Autocomplete(document.getElementById('autocomplete'), {})
-        this.autocomplete.addListener("place_changed", this.handlePlaceSelect)
-    }
-
-    handlePlaceSelect = () => {
-        let addressObject = this.autocomplete.getPlace();
-        let address = addressObject.address_components
-        console.log('addressObject', addressObject)
-        console.log('address', address)
-       /* this.setState({
-            city: addressObject.name
-        })*/
     };
 
     handleChange = (e) => {
@@ -46,7 +26,6 @@ class CitySearch extends Component{
                 <div className="search-input">
                     <div className="ui icon input">
                         <input
-                            id="autocomplete"
                             type="text"
                             placeholder="Search..."
                             onChange={this.handleChange}
@@ -70,6 +49,3 @@ class CitySearch extends Component{
 }
 
 export default CitySearch
-
-
-{/**/}

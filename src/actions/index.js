@@ -7,7 +7,7 @@ import {
     DELETE_CITY,
     ERROR_NO_MATCHES,
     ERROR_CLEAR,
-    ERROR_DENIED_GEOLOCATION
+    ERROR_DENIED_GEOLOCATION, ADD_CURRENT_LOCATION_WEATHER
 } from "./types";
 
 export const getCurrentLocation = () => (dispatch, getState) => {
@@ -32,6 +32,10 @@ export const getCurrentLocation = () => (dispatch, getState) => {
                     description: dataCurrentLocation.weather[0].description
                 }
             });
+            return dataCurrentLocation
+
+        })
+        .then( dataCurrentLocation => {
             //Add current city weather to weather data array in table
             const cityWeatherCurrentLocation = {
                 id: v4(),
@@ -46,7 +50,12 @@ export const getCurrentLocation = () => (dispatch, getState) => {
             if(_.find(weatherData, ['city', cityCapitalized])){
                 return;
             }
-            weatherData.unshift(cityWeatherCurrentLocation)
+            //console.log('cityWeatherCurrentLocation', cityWeatherCurrentLocation)
+            dispatch({
+                type: ADD_CURRENT_LOCATION_WEATHER,
+                payload: cityWeatherCurrentLocation
+            })
+            //weatherData.unshift(cityWeatherCurrentLocation)
         })
         .catch( error => {
             console.log(error);
