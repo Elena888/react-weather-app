@@ -15,7 +15,7 @@ class App extends React.Component{
         this.props.addCityWeather(city)
     };
 
-    deleteCity = (cityId) => {
+    deleteCityHandler = (cityId) => {
         this.props.deleteCity(cityId)
     };
 
@@ -32,12 +32,11 @@ class App extends React.Component{
                             <h4><img src={`http://openweathermap.org/img/w/${icon}.png`} alt="icon"/> {temp}&deg;C - {description}</h4>
                         </React.Fragment>
                     }
-
                 </div>
                 <CitySearch handleSearch={this.handleSearch} errorMatches={this.props.weather.errorMatches}/>
                 <WeatherTable
                     weatherData={this.props.weather}
-                    deleteCity={this.deleteCity}
+                    deleteCityHandler={this.deleteCityHandler}
                 />
             </div>
         )

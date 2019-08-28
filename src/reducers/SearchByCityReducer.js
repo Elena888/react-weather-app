@@ -15,13 +15,13 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type){
-       case ADD_CURRENT_LOCATION_WEATHER:
-            console.log(action.payload)
-            let dataFirstElement = [ ...state.data, action.payload ]
+        case ADD_CURRENT_LOCATION_WEATHER:
+            let dataFirstElement = [ action.payload, ...state.data ];
             return { ...state, data: dataFirstElement, errorMatches: null, errorItems: null }
 
         case CITY_WEATHER:
-            return { ...state, data: action.payload, errorMatches: null, errorItems: null };
+            let dataWeather = [...state.data, action.payload];
+            return { ...state, data: dataWeather, errorMatches: null, errorItems: null };
 
         case ERROR_ITEMS:
             return { ...state, errorMatches: null, errorItems: 'Please delete some of the existing locations to add new ones.' };

@@ -1,51 +1,41 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 
-class CitySearch extends Component{
-    state = {
-        city: ''
+const CitySearch = (props) => {
+   const [city, setCity] = useState('');
+
+    const handleChange = (e) => {
+        setCity(e.target.value)
     };
 
-    handleChange = (e) => {
-        this.setState({
-            city: e.target.value
-        })
-    };
-
-
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        this.props.handleSearch(this.state.city);
-        this.setState({
-            city: ''
-        })
+        props.handleSearch(city);
+        setCity('')
     };
 
-    render(){
-        return(
-            <form onSubmit={this.handleSubmit}>
-                <div className="search-input">
-                    <div className="ui icon input">
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            onChange={this.handleChange}
-                            value={this.state.city}
-                        />
-                        <button type="submit">
-                            <i className="inverted circular search link icon"></i>
-                        </button>
-                    </div>
-                    {this.props.errorMatches &&
+    return(
+        <form onSubmit={handleSubmit}>
+            <div className="search-input">
+                <div className="ui icon input">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        onChange={handleChange}
+                        value={city}
+                    />
+                    <button type="submit">
+                        <i className="inverted circular search link icon"></i>
+                    </button>
+                </div>
+                {props.errorMatches &&
                     <div className="tooltip">
                         <i className="warning icon"></i>
-                        {this.props.errorMatches}
+                        {props.errorMatches}
                     </div>
-                    }
-                </div>
-            </form>
-
-        )
-    }
-}
+                }
+            </div>
+        </form>
+    )
+};
 
 export default CitySearch

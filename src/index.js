@@ -19,7 +19,7 @@ store.subscribe(() => {
     saveState({
         weather: store.getState().weather
     })
-})
+});
 
 ReactDOM.render(
     <Provider store={store}>

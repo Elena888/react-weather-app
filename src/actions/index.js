@@ -7,11 +7,13 @@ import {
     DELETE_CITY,
     ERROR_NO_MATCHES,
     ERROR_CLEAR,
-    ERROR_DENIED_GEOLOCATION, ADD_CURRENT_LOCATION_WEATHER
+    ERROR_DENIED_GEOLOCATION,
+    ADD_CURRENT_LOCATION_WEATHER
 } from "./types";
 
+const API_KEY = 'f6b238cfbf1ab8f76d87a7f3ebcc799a';
+
 export const getCurrentLocation = () => (dispatch, getState) => {
-    const API_KEY = 'f6b238cfbf1ab8f76d87a7f3ebcc799a';
     const getLocation = new Promise( (res, rej) => {
         window.navigator.geolocation.getCurrentPosition(location => res(location.coords),
                                                         err => rej(err))
@@ -32,8 +34,8 @@ export const getCurrentLocation = () => (dispatch, getState) => {
                     description: dataCurrentLocation.weather[0].description
                 }
             });
-            return dataCurrentLocation
 
+            return dataCurrentLocation
         })
         .then( dataCurrentLocation => {
             //Add current city weather to weather data array in table
@@ -50,12 +52,10 @@ export const getCurrentLocation = () => (dispatch, getState) => {
             if(_.find(weatherData, ['city', cityCapitalized])){
                 return;
             }
-            //console.log('cityWeatherCurrentLocation', cityWeatherCurrentLocation)
             dispatch({
                 type: ADD_CURRENT_LOCATION_WEATHER,
                 payload: cityWeatherCurrentLocation
             })
-            //weatherData.unshift(cityWeatherCurrentLocation)
         })
         .catch( error => {
             console.log(error);
@@ -67,7 +67,6 @@ export const getCurrentLocation = () => (dispatch, getState) => {
 };
 
 export const addCityWeather = (city) => (dispatch, getState) => {
-    const API_KEY = 'f6b238cfbf1ab8f76d87a7f3ebcc799a';
     const apiCall = fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&appid=${API_KEY}`);
     apiCall
         .then( response => {
@@ -86,16 +85,14 @@ export const addCityWeather = (city) => (dispatch, getState) => {
 
             //Show only three items in table
             if(weatherData.length < 3){
-
                 //Check the same city in weather array table
                 const cityCapitalized = city.charAt(0).toUpperCase() + city.slice(1);
                 if(_.find(weatherData, ['city', cityCapitalized])){
                     return;
                 }
-                weatherData.push(cityWeather);
                 dispatch({
                     type: CITY_WEATHER,
-                    payload: weatherData
+                    payload: cityWeather
                 })
             }else{
                 dispatch({
@@ -135,15 +132,3 @@ export const initialState = () => {
         type: ERROR_CLEAR
     }
 };
-
-/*
-export const getWeatherByCity = (city) => async dispatch => {
-    const API_KEY = 'f6b238cfbf1ab8f76d87a7f3ebcc799a';
-    const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&appid=${API_KEY}`);
-    const response = await api_call.json();
-console.log('response', response)
-    dispatch({
-        type: SEARCH_CITY,
-        payload: response
-    })
-};*/
